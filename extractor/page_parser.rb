@@ -7,9 +7,8 @@ module Extractor
     end
 
     def parse xml
-      page_element = Ox.parse xml
-      id = page_element.id.text
-      title = page_element.title.text
+      page_xml = Ox.parse xml
+      title = Page.title page_xml
     end
 
     def extract_text text

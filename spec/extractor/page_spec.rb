@@ -14,10 +14,10 @@ describe Extractor::Page do
     XML
   }
 
-  describe '#extract_title' do
-    it 'should find redirect' do
-      title = subject.extract_title xml
-      expect(title).to eq('computer accessibility')
+  describe '#title_map' do
+    it 'should map title to redirect title' do
+      title = subject.title_map xml
+      expect(title).to eq([10, 'accessible computing', 'computer accessibility'])
     end
   end
 end

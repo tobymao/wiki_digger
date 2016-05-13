@@ -5,39 +5,9 @@ Dir["./extractor/**/*.rb" ].each { |file| require file }
 
 FILE_PATH = '/Users/toby/Downloads/enwiki-20160501-pages-articles-multistream.xml.bz2'
 
-
+#csv = CSV.open("/Users/toby/Desktop/test", "w")
 time = Time.now
 i = 0
-
-class Page
-  attr_reader :id, :ns, :title, :text
-
-  def initialize id, ns, title, text
-    @id = id
-    @ns = ns
-    @title = title
-    @text = text
-  end
-
-  def extract
-    # match  links non greedily eg: [[text]]
-    @text.scan(/(?<=\[\[).*?(?=\]\])/).map do |link|
-      parse_link link
-    end.compact
-  end
-
-  private
-  def parse_link link
-    if /^Category/ =~ link
-      # drop category from the link
-      link[9..-1]
-    end
-  end
-end
-
-csv = CSV.open("/Users/toby/Desktop/test", "w")
-file = File.open("/Users/toby/Desktop/sample.xml", "w")
-
 IO.popen("bzip2 -c -d #{FILE_PATH}") do |io|
   page = false
   buf = ''
@@ -49,7 +19,9 @@ IO.popen("bzip2 -c -d #{FILE_PATH}") do |io|
     elsif /<\/page>/ =~ line
       page = false
       buf << line
-      file << buf
+
+      page_xml = Ox.parse buf
+      title = Extractor::Page.title_map page_xml
 
       #csv << PageParser.parse(buf)
       buf = ''
@@ -72,10 +44,10 @@ IO.popen("bzip2 -c -d #{FILE_PATH}") do |io|
     buf << line if page
 
 
-    break if i > 1000
+    break if i > 10
   end
 end
 
-csv.close
+#csv.close
 
 puts "Took #{Time.now - time}"
