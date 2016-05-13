@@ -1,0 +1,15 @@
+/.env.rb
+/.session_secret
+.DS_STORE
+*.swp
+*.rbc
+.rspec
+/log
+!/log/.keep
+/tmp
+/public
+coverage/
+/spec/tmp
+/.bundle
+/vendor/bundle
+.rvmrc
