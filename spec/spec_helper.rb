@@ -2,7 +2,8 @@ require 'simplecov'
 SimpleCov.start  do
   add_filter "/spec/"
 end
-require './parser.rb'
+
+require './extractor.rb'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
